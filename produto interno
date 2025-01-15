@@ -1,0 +1,19 @@
+import numpy as np
+# a função prodint recebe dois vetores b,c e ira retornar o produto interno entre os dois através de np.dot que irá calcular o produto interno entre b,c
+def prodint(b,c):
+    prodint = np.dot(b,c)
+    return prodint
+#a função distancia irá receber dois vetores b,c e vai retornar a distancia entre os dois.
+#o calculo é feito sendo a raiz quadrada da soma dos quadrados da diferença(norma euclidiana)
+def distancia(b,c):
+    distancia = np.sqrt(np.sum((b-c)**2))
+    return distancia
+#foram dados dois vetores
+b = np.array([1,2,3])
+c = np.array([4,5,6])
+#impressão do resultado na tela
+prod_b_c = prodint(b,c)
+print("<b,c>",prod_b_c)
+
+distancia_b_c = distancia(b,c)
+print("a distancia é: ",distancia_b_c)
