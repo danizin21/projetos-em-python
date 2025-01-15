@@ -1,0 +1,51 @@
+#letra J:import numpy as np
+
+def qr_decomposição(A):
+    #pega o numero de linhas(l) e colunas(c) da matriz A
+    l, c = A.shape
+    #inicializa as matrizes Q e R com zeros
+    Q = np.zeros((l, c))
+    R = np.zeros((l, c))
+
+# for que irá iterar c vezes, onde c é o numero de colunas da matriz A
+    for k in range(c):
+        #pega a k-ésima coluna da matriz A, em Numpy, ':' é um operador que seleciona todos os elementos ao longo de uma dimensão
+        #nesse exemplo irá selecionar todos os elementos da k-ésima coluna de A
+        u = A[:, k]
+        for i in range(k):
+            #nesse passo calcula-se o coeficiente de projeção da k-ésima coluna de A na i-ésima coluna de Q.
+            #o comando np.dot em Numpy é utilizado para calcular o produto interno de dois vetores ou o produto matricial de duas matrizes
+            #no contexto da questão o np.dot calcula o produto interno da i-ésima coluna de Q(transposta) com a k-ésima coluna de A.
+            R[i, k] = np.dot(Q[:, i].T, A[:, k])
+            #subtrai-se a projeção do vetor u, para que remova a componente de u que está na direção de Q[:,i]
+            #subtrai-se a projeção da k-ésima coluna de A na iésima coluna de Q, ajudando a garantir a ortogonalidade das colunas de Q.
+            u = u - R[i, k] * Q[:, i]
+            #calcula a norma de u
+            #a norma do vetor é essencial para a normalização, pois é preciso ssaber o tamanho do vetor u antes de converte-lo em um vetor unitário.
+        R[k, k] = np.linalg.norm(u)
+        #divide u pela sua norma para criar um vetor unitário e o armaze na k-ésima coluna de Q
+        #essa linha de código:
+        # normaliza o vetor u dividindo-o pela sua norma R[K,K] sendo o resultado um vetor unitário
+        #fazemos isso para que a normalização de u garanta que a coluna Q[:,k] tenha comprimento unitário, o que é necessário para que Q seja uma matriz ortogonal.
+        #divide-se cada componente do vetor u por ||u|| ajustando assim o comprimento do vetor para 1 sem alterar sua direção.
+        Q[:, k] = u / R[k, k]
+
+    return Q, R
+
+# exemplo
+A = np.array([[21, 2, 3],
+              [12, 4, 4],
+              [6, 6, 9]])
+
+Q, R = qr_decomposição(A)
+
+print("Matriz A:")
+print(A)
+print("\nmatriz ortogonal Q:")
+print(Q)
+print("\nmatriz triangular superior R:")
+print(R)
+
+# verificando a decomposição
+print("\nQ * R == A :")
+print(np.dot(Q, R))
